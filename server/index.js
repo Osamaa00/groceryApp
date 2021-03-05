@@ -1,8 +1,7 @@
-// const mongoose = require('mongoose');
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
  
-mongoose.connect('mongodb+srv://osama:8998@@>>>z?@groceryapp.trb48.mongodb.net/appDatabase?retryWrites=true&w=majority' , {useNewUrlParser: true, useUnifiedTopology: true}).catch((error)=>console.log(error));
+mongoose.connect('mongodb+srv://osama:bmw600bmw600@groceryapp.trb48.mongodb.net/appDatabase?retryWrites=true&w=majority' , {useNewUrlParser: true, useUnifiedTopology: true}).catch((error)=>console.log(error));
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -11,15 +10,13 @@ db.once('open', function() {
 
 const users = new Schema(
     {
-        id:Number,
+        id: Number,
         username:String,
         password:String,
         email:String,
         address:String    
     }
 );
-
-
 
 const admins = new Schema(
     {
@@ -71,12 +68,25 @@ const operational = new Schema(
     }
 );
 
+db.createCollection('admins');
+
 const user1=mongoose.model("users",users);
 const admins1=mongoose.model("admins",admins);
 const inventory1=mongoose.model("inventory",inventory);
 const orders1=mongoose.model("orders",orders);
-const category1=mongoose.model("catagory",catagory);
+const category1=mongoose.model("category",category);
 const userLog1=mongoose.model("userlog",userLog);
 const adminLog1=mongoose.model("adminLog",adminLog);
 const operational1=mongoose.model("operational",operational);
+
+
+const data = new user1 ({
+    id: 13,
+    username: 'asd',
+    password: 'dasd',
+    email: 'asdasd',
+    address: 'asdasd'   
+});
+
+data.save();
 
