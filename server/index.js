@@ -26,10 +26,12 @@ const admins = new Schema(
 );
 const inventory = new Schema(
     {
+        name: String,
         productid:Number,
         itemq:Number,
         category:String,
-        best_before:String    
+        best_before:String,
+        images: Array
     }
 );
 const orders = new Schema(

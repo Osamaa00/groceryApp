@@ -21,6 +21,7 @@ db.once('open', function() {
 
 const User = mongoose.model("users");
 const active_tokens = mongoose.model("active_tokens");
+const inventory = mongoose.model("inventory");
 
 app.post('/users', async ( req, res ) => {
 
@@ -47,7 +48,7 @@ app.post('/users', async ( req, res ) => {
     }
 
     else{
-        res.send("Name or pass missing")
+        res.send("Username or password missing")
     }
 });
 
@@ -114,13 +115,50 @@ app.post('/logout',async (req,res)=>{
 });
 
 
-app.get('/search',(req,res)=>{
-    if(req.query.id){
-        
+app.get('/search',async (req,res)=>{
+    if(req.query.name){
+        value=req.query.name;
+        data=await inventory.find({name: `/^${value}/`, category:`/^${value}/`});
+
+        res.json(data);
     }
     
 })
 
+const prod1 = new inventory ({
+    name: "sunsilk",
+    category:"shampoo",
+
+})
+prod1.save();
+
+const prod2 = new inventory ({
+    name: "lifebuoy",
+    category:"shampoo",
+
+})
+prod2.save();
+
+const prod3 = new inventory ({
+    name: "lux",
+    category:"soap",
+
+})
+prod3.save();
+
+const prod4 = new inventory ({
+    name: "safeguard",
+    category:"soap",
+
+})
+prod4.save();
+
+const prod5 = new inventory ({
+    name: "tibet",
+    category:"soap",
+
+})
+prod5.save();
 
 const PORT = process.env.PORT || 3000;
 
