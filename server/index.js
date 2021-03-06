@@ -10,7 +10,6 @@ db.once('open', function() {
 
 const users = new Schema(
     {
-        id: Number,
         username:String,
         password:String,
         email:String,
@@ -27,10 +26,10 @@ const admins = new Schema(
 );
 const inventory = new Schema(
     {
-        itemid:Number,
+        productid:Number,
         itemq:Number,
-        catagory:String,
-        bf:String    
+        category:String,
+        best_before:String    
     }
 );
 const orders = new Schema(
@@ -67,26 +66,30 @@ const operational = new Schema(
         name:String, 
     }
 );
+const active_tokens = new Schema(
+    {
+        username: String,
+        token:String, 
+    }
+);
 
-db.createCollection('admins');
+// db.createCollection('admins');
 
-const user1=mongoose.model("users",users);
-const admins1=mongoose.model("admins",admins);
-const inventory1=mongoose.model("inventory",inventory);
-const orders1=mongoose.model("orders",orders);
-const category1=mongoose.model("category",category);
-const userLog1=mongoose.model("userlog",userLog);
-const adminLog1=mongoose.model("adminLog",adminLog);
-const operational1=mongoose.model("operational",operational);
+mongoose.model("users",users);
+mongoose.model("admins",admins);
+mongoose.model("inventory",inventory);
+mongoose.model("orders",orders);
+mongoose.model("category",category);
+mongoose.model("userlog",userLog);
+mongoose.model("adminLog",adminLog);
+mongoose.model("operational",operational);
+mongoose.model('active_tokens',active_tokens);
+// const data = new user1 ({
+//     id: 13,
+//     username: 'asd',
+//     password: 'dasd',
+//     email: 'asdasd',
+//     address: 'asdasd'   
+// });
 
-
-const data = new user1 ({
-    id: 13,
-    username: 'asd',
-    password: 'dasd',
-    email: 'asdasd',
-    address: 'asdasd'   
-});
-
-data.save();
-
+// data.save();
