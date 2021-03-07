@@ -115,50 +115,49 @@ app.post('/logout',async (req,res)=>{
 });
 
 
-app.get('/search',async (req,res)=>{
+app.get('/search', async (req,res) => {
     if(req.query.name){
-        value=req.query.name;
-        data=await inventory.find({name: `/^${value}/`, category:`/^${value}/`});
-
+        const value=req.query.name;
+        const data = await inventory.find({$or:[{name: new RegExp('^'+value)},{category:new RegExp('^'+value)}]});
+        // const data = await inventory.find({or:[{name: '/^'+value+'/'}, {category:'/^'+value+'/'}]});
         res.json(data);
     }
-    
-})
+});
 
-const prod1 = new inventory ({
-    name: "sunsilk",
-    category:"shampoo",
+// const prod1 = new inventory ({
+//     name: "sunsilk",
+//     category:"shampoo",
 
-})
-prod1.save();
+// })
+// prod1.save();
 
-const prod2 = new inventory ({
-    name: "lifebuoy",
-    category:"shampoo",
+// const prod2 = new inventory ({
+//     name: "lifebuoy",
+//     category:"shampoo",
 
-})
-prod2.save();
+// })
+// prod2.save();
 
-const prod3 = new inventory ({
-    name: "lux",
-    category:"soap",
+// const prod3 = new inventory ({
+//     name: "lux",
+//     category:"soap",
 
-})
-prod3.save();
+// })
+// prod3.save();
 
-const prod4 = new inventory ({
-    name: "safeguard",
-    category:"soap",
+// const prod4 = new inventory ({
+//     name: "safeguard",
+//     category:"soap",
 
-})
-prod4.save();
+// })
+// prod4.save();
 
-const prod5 = new inventory ({
-    name: "tibet",
-    category:"soap",
+// const prod5 = new inventory ({
+//     name: "tibet",
+//     category:"soap",
 
-})
-prod5.save();
+// })
+// prod5.save();
 
 const PORT = process.env.PORT || 3000;
 

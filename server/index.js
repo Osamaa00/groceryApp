@@ -31,7 +31,8 @@ const inventory = new Schema(
         itemq:Number,
         category:String,
         best_before:String,
-        images: Array
+        images: Array,
+        price: Number
     }
 );
 const orders = new Schema(
