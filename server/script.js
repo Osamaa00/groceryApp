@@ -23,7 +23,7 @@ const User = mongoose.model("users");
 const active_tokens = mongoose.model("active_tokens");
 const inventory = mongoose.model("inventory");
 
-app.post('/users', async ( req, res ) => {
+app.post('/signup', async ( req, res ) => {
 
     if( req.body.username && req.body.password ){
         
@@ -93,6 +93,8 @@ app.post('/users/login', async ( req, res ) => {
         res.json({status:"masti"})
     }
 });
+
+
 app.post('/logout',async (req,res)=>{
    if(req.body.token && req.body.username){
         const data=await active_tokens.find({token:req.body.token})
@@ -117,16 +119,81 @@ app.post('/logout',async (req,res)=>{
 
 app.get('/search', async (req,res) => {
     if(req.query.name){
-        const value=req.query.name;
+        const value=req.query.name.toLowerCase();
         const data = await inventory.find({$or:[{name: new RegExp('^'+value)},{category:new RegExp('^'+value)}]});
-        // const data = await inventory.find({or:[{name: '/^'+value+'/'}, {category:'/^'+value+'/'}]});
-        res.json(data);
+        res.json(data);        
     }
 });
+
+
+app.post('/proceed', async (req, res)=>{
+    if( req.body.token && req.body.username && req.body.password ){
+        
+        const { username, password, token } = req.body;
+        const getPassword = await User.find({ username: username });
+        if (!getPassword.length) res.send("Couldnt find you");
+        const decryptPassword = await bcrypt.compare( password, getPassword[0].password );
+        if ( decryptPassword ){
+            const verifyToken = await jwt.verify( token, process.env.my_secret_key );
+            const checkLogin = await active_tokens.find({ token: token });
+            if ( checkLogin && verifyToken ){
+                res.send("Party karo boi");
+            }
+            else{
+                res.send("Daal mein kuch kala hai Daya!");
+            }    
+        }
+        else{
+            res.send("Password do not match to your account")
+        }
+        
+    }
+});
+
+app.post('/ch_password', async (req, res) => {
+    if(req.body.username && req.body.password && req.body.new_password && req.body.token){
+        const { username, password, new_password, token } = req.body;
+        const check = await authChangePassword( username, password, new_password, token );
+        if (check){
+            const deleteToken = await active_tokens.deleteOne({token: token});
+            if ( deleteToken ) res.send("Password changed");
+        }
+        else{
+            res.send("Something went wrong");
+        }
+    }
+})
+
+const authChangePassword = async (username, oldPass, newPass, token) => {
+    const getToken = await active_tokens.find({token: token});
+    if(getToken.length == 1){
+        if(username == await jwt.verify(token,process.env.my_secret_key)){
+            
+            const us = await User.find({username:username});
+            const tempPass = us[0].password;
+            // console.log(">>>" + tempPass);
+            const letsWait = await bcrypt.compare( oldPass, tempPass );
+            // console.log(">>>" + letsWait);
+            // console.log(us);
+            if(us.length == 1 && letsWait){
+                // console.log("Iam in")
+                const anotherNewPassword = await bcrypt.hash(newPass, 10);
+                const flag = await User.updateOne({username: username, password: tempPass}, {password: anotherNewPassword});
+                // console.log(flag);
+                return true;   
+            }
+            else{
+                return false;
+            }
+        }
+    }
+};
+
 
 // const prod1 = new inventory ({
 //     name: "sunsilk",
 //     category:"shampoo",
+//     price: 12
 
 // })
 // prod1.save();
@@ -134,6 +201,7 @@ app.get('/search', async (req,res) => {
 // const prod2 = new inventory ({
 //     name: "lifebuoy",
 //     category:"shampoo",
+//     price: 122
 
 // })
 // prod2.save();
