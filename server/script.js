@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const { mongoUrl } = require('./mongoUrl');
 
 
-users = [];
+// users = [];
 
 mongoose.connect(mongoUrl);
 const db = mongoose.connection;
@@ -25,20 +25,18 @@ const inventory = mongoose.model("inventory");
 
 app.post('/signup', async ( req, res ) => {
 
-    if( req.body.username && req.body.password ){
+    if( req.headers.username && req.headers.password ){
         
-        const {username,password} = req.body;
+        const {username,password} = req.headers;
         const user12=await User.find({username});
     
         if( user12.length == 0 ){
             salt = await bcrypt.genSalt();
             const hashed = await bcrypt.hash( password,salt );
             console.log ( `hashed password here:  ${hashed}` );
-            const user1 = { username, password: hashed }
-            users.push( user1 );
-            res.json( users );
             const user = new User({username: username, password: hashed});
             user.save();
+            res.json(user);
         }
         
         else{
@@ -54,23 +52,23 @@ app.post('/signup', async ( req, res ) => {
 
 app.post('/users/login', async ( req, res ) => {
     
-    if( req.body.username && req.body.password ){
-            const data=await User.find({username: req.body.username});
+    if( req.headers.username && req.headers.password ){
+            const data = await User.find({username: req.headers.username});
             console.log(data);
         if( data ){
             console.log("USERNAME: " + data[0].username);
             const { username, password } =  data[0];
             try{
-                if( await bcrypt.compare( req.body.password, password )){
-                    if(!req.body.token){
-                        const token =await jwt.sign(username, process.env.my_secret_key);
+                if( await bcrypt.compare( req.headers.password, password )){
+                    if(!req.headers.token){
+                        const token = await jwt.sign(username, process.env.my_secret_key);
                         const user1 = { status:'success', access: token }
                         const store=new active_tokens({username:username,token:token});
                         store.save();
                         res.json(user1);
                         console.log("Username: " + username);
                     }
-                    else if((await active_tokens.find({token:req.body.token})).length==0){
+                    else if((await active_tokens.find({token:req.headers.token})).length==0){
                         res.send('titu patiyaan na ker');
                     }
                     else{
@@ -96,11 +94,11 @@ app.post('/users/login', async ( req, res ) => {
 
 
 app.post('/logout',async (req,res)=>{
-   if(req.body.token && req.body.username){
-        const data=await active_tokens.find({token:req.body.token})
+   if(req.headers.token && req.headers.username){
+        const data=await active_tokens.find({token:req.headers.token})
         if(data.length>0){
-            if((jwt.verify(req.body.token,process.env.my_secret_key))==req.body.username){
-                const del= await active_tokens.deleteOne({token:req.body.token});
+            if((jwt.verify(req.headers.token,process.env.my_secret_key))==req.headers.username){
+                const del= await active_tokens.deleteOne({token:req.headers.token});
                 res.send('successful');
             }
             else{
@@ -127,9 +125,9 @@ app.get('/search', async (req,res) => {
 
 
 app.post('/proceed', async (req, res)=>{
-    if( req.body.token && req.body.username && req.body.password ){
+    if( req.headers.token && req.headers.username && req.headers.password ){
         
-        const { username, password, token } = req.body;
+        const { username, password, token } = req.headers;
         const getPassword = await User.find({ username: username });
         if (!getPassword.length) res.send("Couldnt find you");
         const decryptPassword = await bcrypt.compare( password, getPassword[0].password );
@@ -151,8 +149,8 @@ app.post('/proceed', async (req, res)=>{
 });
 
 app.post('/ch_password', async (req, res) => {
-    if(req.body.username && req.body.password && req.body.new_password && req.body.token){
-        const { username, password, new_password, token } = req.body;
+    if(req.headers.username && req.headers.password && req.headers.new_password && req.headers.token){
+        const { username, password, new_password, token } = req.headers;
         const check = await authChangePassword( username, password, new_password, token );
         if (check){
             const deleteToken = await active_tokens.deleteOne({token: token});
@@ -188,6 +186,32 @@ const authChangePassword = async (username, oldPass, newPass, token) => {
         }
     }
 };
+
+app.post('/proceed_to_pay', async ( req , res ) => {
+   const { username, password, token } = req.headers;
+   if(username && password && token){
+        const data = await User.find({ username: username });
+        const verifypass = await bcrypt.compare( password, data[0].password );
+        const verifytoken = await jwt.verify(token,process.env.my_secret_key);
+        if((username == verifytoken) && verifypass){
+            res.json({operation:"success",data:data});
+        }
+        else{
+            res.json({operation:'failed'})
+        }
+   }
+   else{
+       res.send("Few parameters are missing");
+   }
+});
+
+
+// app.get('/demo', async (req,res) => {    
+//     console.log(req);
+//     // console.log(req.get("email"));
+//     // console.log(req.headers['password']);
+//     // console.log(req.get("content-type"));
+// });
 
 
 // const prod1 = new inventory ({
