@@ -35,6 +35,7 @@ const inventory = new Schema(
         price: Number
     }
 );
+
 const orders = new Schema(
     {
         orderid:Number,
@@ -72,7 +73,8 @@ const operational = new Schema(
 const active_tokens = new Schema(
     {
         username: String,
-        token:String, 
+        token:String,
+        devices: Array, 
     }
 );
 

@@ -2,6 +2,7 @@ require('./index');
 const express = require('express');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+const os = require('os');
 const jwt=require('jsonwebtoken')
 const app = express();
 app.use(express.json());
@@ -58,14 +59,29 @@ app.post('/users/login', async ( req, res ) => {
         if( data ){
             console.log("USERNAME: " + data[0].username);
             const { username, password } =  data[0];
-            try{
+            
                 if( await bcrypt.compare( req.headers.password, password )){
                     if(!req.headers.token){
                         const token = await jwt.sign(username, process.env.my_secret_key);
                         const user1 = { status:'success', access: token }
-                        const store=new active_tokens({username:username,token:token});
-                        store.save();
-                        res.json(user1);
+                        const getUser = await active_tokens.find({ username: username });
+                        if ( getUser.length > 0 ){
+                            const activeDevices = getUser[0].devices;
+                            const deviceId = activeDevices[activeDevices.length - 1];
+                            // console.log(deviceId);
+                            // activeDevices.push(deviceId + 1);
+                            // console.log(activeDevices);
+                            const update = await active_tokens.updateOne({username:username, token:token}, { $push: { devices: deviceId + 1 } });
+                            if ( update ) res.send('successful');
+                            
+                            
+                        }
+                        else{
+                            const store = new active_tokens({username:username,token:token, devices: [1]});
+                            store.save();
+                            res.send("successful");
+                        }
+                        // res.json(user1);
                         console.log("Username: " + username);
                     }
                     else if((await active_tokens.find({token:req.headers.token})).length==0){
@@ -78,10 +94,11 @@ app.post('/users/login', async ( req, res ) => {
                 else{
                     res.json({status:"invalid"})
                 }
-            }
-            catch{
-                res.json({status:"server error"})
-            }
+            // }
+            // catch{
+            //     res.json({status:"server error"});
+    
+            // }
             
         }
         else{
@@ -94,11 +111,13 @@ app.post('/users/login', async ( req, res ) => {
 
 
 app.post('/logout',async (req,res)=>{
-   if(req.headers.token && req.headers.username){
+   if(req.headers.token && req.headers.username && req.headers.deviceId){
         const data=await active_tokens.find({token:req.headers.token})
         if(data.length>0){
             if((jwt.verify(req.headers.token,process.env.my_secret_key))==req.headers.username){
-                const del= await active_tokens.deleteOne({token:req.headers.token});
+                const index = data[0].devices.indexOf(req.headers.deviceId);
+                delete data[0].devices[index];
+                const update = await active_tokens.updateOne({token:req.headers.token}, {devices: data[0].devices});
                 res.send('successful');
             }
             else{
@@ -207,7 +226,8 @@ app.post('/proceed_to_pay', async ( req , res ) => {
 
 
 // app.get('/demo', async (req,res) => {    
-//     console.log(req);
+//     console.log(req.get("user-agent"));
+//     // console.log(os.platform());
 //     // console.log(req.get("email"));
 //     // console.log(req.headers['password']);
 //     // console.log(req.get("content-type"));
