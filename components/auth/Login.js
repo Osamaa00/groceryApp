@@ -19,7 +19,7 @@ const Login = ( { navigation, route } ) => {
     return (
         <View style={styles.container}>
             <View style={styles.credentials}>
-                <TextInput
+                <TextInput 
                     style={styles.inputs}
                     placeholder="Email"
                     value={utext}
@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         width: "80%",
         textAlign: "center",
-        
+        marginTop: 50,
+        borderRadius: 20
     },
     credentials:{
         alignItems:"center",
