@@ -143,10 +143,13 @@ app.post('/logout',async (req,res)=>{
 
 
 app.get('/search', async (req,res) => {
-    if(req.query.name){
+    if(req.query.name != ''){
         const value=req.query.name.toLowerCase();
-        const data = await inventory.find({$or:[{name: new RegExp('^'+value)},{category:new RegExp('^'+value)}]});
+        const data = await inventory.find({$or:[{name: new RegExp('^'+value)}, {category:new RegExp('^'+value)}]});
         res.json(data);        
+    }
+    else{
+        console.log("Hello World!!!");
     }
 });
 
