@@ -8,9 +8,7 @@ export default function Home({ navigation }) {
         <View style={styles.container}>
             <Icon name="bars" size={40} color="#900" />
             <TouchableOpacity style = {styles.search} onPress = { () => navigation.navigate('Search Page') }>
-                <Image source={ require('../assets/favicon.png') }/>
                 <Text>
-                    
                     Search here
                 </Text>
             </TouchableOpacity>

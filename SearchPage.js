@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TextInput } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import ResultComponent from './components/ResultComponent';
 // import { FlatList } from 'react-native-gesture-handler';
 
 
@@ -9,9 +11,11 @@ export default function SearchPage({ navigation }) {
     const fun = () => {
         var key = 0;
         if ( fetchedData.length > 0 ){
-            var ppd = fetchedData.map(d => {
+            var ppd = fetchedData.map(prodName => {
                 key++;
-                return <Text key = { key }>{d}</Text>
+                console.log(prodName);
+                return <ResultComponent key = { key } name = { prodName.name } products = { prodName } />
+                // return <Text key = { key } >{ prodName }</Text>
             });
             return ppd;
         }
@@ -41,8 +45,10 @@ export default function SearchPage({ navigation }) {
             .then(r=>r.json())
             .then( data => { 
 
-                data.forEach(product => {fetchedProducts.push(product.name)} 
-                )
+                data.forEach(product => {
+                    fetchedProducts.push(product);
+
+                })
             })
             .catch((err)=>console.log(err));
             setdata(fetchedProducts);
@@ -67,14 +73,20 @@ export default function SearchPage({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <TextInput 
-            placeholder="Search Here"
-            onChangeText={ (e) => setSearchText(e) }
-            >
-            </TextInput>
-            { newst }
+            <View style={styles.searchBarView}>
+                <TextInput style={styles.searchBar}
+                placeholder="Search Here"
+                onChangeText={ (e) => setSearchText(e) }
+                >
+                </TextInput>
+            </View>
+            
+            <ScrollView>
+                { newst }   
+            </ScrollView>
             
         </View>
+        
     )
 };
 
@@ -91,16 +103,23 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center",
     },
-    item: {
-        backgroundColor: '#f9c2ff',
+    searchBarView: {
+        flexDirection:"row",
+        width:"100%",
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
     },
+    searchBar:{
+        height: 40,
+        width:"80%",
+    }
+    ,
     title: {
         fontSize: 32,
     },
-  });
+  
+});
 
 //   <Text onPress={()=>setnewst(fun())}>Submit</Text>
     // console.log(fetchedData);
