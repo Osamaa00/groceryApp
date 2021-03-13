@@ -11,6 +11,7 @@ import Home from "./home/Home";
 import SearchPage from "./SearchPage";
 import ResultComponent from "./components/ResultComponent";
 import Products from "./components/Products";
+import Cart from "./home/Cart";
 
 import {
   StyleSheet,
@@ -30,6 +31,8 @@ export default function App() {
         <Stack.Screen name="Product" component={ Products } options = {{ title: "Product" }} />
         <Stack.Screen name="Login" component={ Login } options = {{ title: "Login" }} />
         <Stack.Screen name="Signup" component={ Signup } options = {{ title: "Signup" }} />
+        <Stack.Screen name="Cart" component={ Cart } options = {{ title: "Cart" }} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
