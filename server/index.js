@@ -30,6 +30,8 @@ const inventory = new Schema(
         productid:Number,
         itemq:Number,
         category:String,
+        subCategory: String,
+        lowCategory: String,
         best_before:String,
         images: Array,
         price: Number
@@ -48,7 +50,8 @@ const orders = new Schema(
 );
 const category = new Schema(
     {
-        name:String, 
+        name:String,
+        subCategory:Array 
     }
 );
 

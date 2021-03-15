@@ -2,12 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as React from 'react';
 import { useState } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-export default function Home({ navigation }) {
 
+export default function Home({ navigation }) {
+    
+    
+    
     const [counterState, setCounterState] = useState(0);
     
     const _storeData = async (key, value) => {
@@ -41,7 +44,7 @@ export default function Home({ navigation }) {
             console.log(error);
         }
     }
-
+    
     const _retrieveData = async (key) => {
         try {   
             const data = await AsyncStorage.getItem(key);
@@ -59,13 +62,14 @@ export default function Home({ navigation }) {
         }
     }
 
-    _storeData();
-    _retrieveData();
-
+    // _storeData();
+    // _retrieveData();
+    
     return (
+        
         <View style={styles.container}>
             <TouchableOpacity style={styles.icons} onPress={() => setCounterState(counterState + 1)}>
-                <Icon name="bars" size={30} color="#900" />
+                <Icon name="bars" size={30} color="#900" onPress={() => navigation.openDrawer() } />
             </TouchableOpacity>
             <TouchableOpacity style = {styles.search} onPress = { () => navigation.navigate('Search Page') }>
                 <Text>
@@ -82,6 +86,7 @@ export default function Home({ navigation }) {
     )
 };
 
+
 const styles = StyleSheet.create({
     burger:{
         width:"10%",
@@ -93,13 +98,17 @@ const styles = StyleSheet.create({
         backgroundColor:'dodgerblue',
         display:"flex",
         flexDirection:"row",
+        alignItems:'center',
         justifyContent:"space-evenly",
         padding: 10,
+        height: (Dimensions.get('window').height) / 10,
+        minHeight:60,
+        maxHeight: 100,
     },
     search:{
         width:"50%",
         borderRadius:10,
-        height:40,
+        height:"90%",
         backgroundColor:'white',
         display:"flex",
         justifyContent:"center",
@@ -107,14 +116,14 @@ const styles = StyleSheet.create({
     },
     icons: {
         width:'20%',
-        height:40,
+        height:"90%",
         alignItems: 'center',
         justifyContent:'center',
     },
     Cicon:{
         flexDirection:'row',
         width:'20%',
-        height:40,
+        height:"90%",
         alignItems: 'center',
         justifyContent:'space-evenly'
     }

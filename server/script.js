@@ -31,7 +31,7 @@ db.once('open', function() {
 const User = mongoose.model("users");
 const active_tokens = mongoose.model("active_tokens");
 const inventory = mongoose.model("inventory");
-
+const categories = mongoose.model("category");
 app.post('/signup', async ( req, res ) => {
 
     if( req.headers.username && req.headers.password ){
@@ -235,6 +235,26 @@ app.post('/proceed_to_pay', async ( req , res ) => {
    }
 });
 
+app.get('/featured', async (req,res) => {
+        const data = await inventory.find().skip(await inventory.count()-2);
+        if(data){
+            res.json(data);
+        }
+        else{
+            res.json({"status":"empty"});
+        }
+});
+
+app.get('/categories', async (req,res) => {
+    const data = await categories.find();
+    if(data){
+        res.json(data);
+    }
+    else{
+        res.json({"status":"empty"});
+    }
+});
+
 
 // app.get('/demo', async (req,res) => {    
 //     console.log(req.get("user-agent"));
@@ -245,13 +265,31 @@ app.post('/proceed_to_pay', async ( req , res ) => {
 // });
 
 
-// const prod1 = new inventory ({
-//     name: "sunsilk",
-//     category:"shampoo",
-//     price: 12
+// const prod1 = new categories ({
+//     name: "hair product",
+//     subCategory: ["shampoo", "hair perfume", "hair lotion", "hair color"],
+// });
 
-// })
+
 // prod1.save();
+
+// const prod2 = new categories ({
+//     name: "skin products",
+//     subCategory: ["skin cream", "skin lotion", "skin moisturizer", "skin whitening cream"],
+// });
+
+
+// prod2.save();
+
+// const prod3 = new categories ({
+//     name: "meat",
+//     subCategory: ["chicken meat", "mutton", "fish meat"],
+// });
+
+
+// prod3.save();
+
+
 
 // const prod2 = new inventory ({
 //     name: "lifebuoy",
