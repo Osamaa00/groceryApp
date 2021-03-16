@@ -16,6 +16,8 @@ import ResultComponent from "./components/ResultComponent";
 import Products from "./components/Products";
 import Cart from "./home/Cart";
 import Categories from './components/Categories';
+import Singlesubcategory from './components/Singlesubcategory'
+import Subcategory from './components/Subcategory'
 
 import {
   StyleSheet,
@@ -27,10 +29,11 @@ export default function App() {
   const Drawer = createDrawerNavigator();
   const { landscape } = useDeviceOrientation();
   
-  const HomeStackScreen = ({ navigation }) => {
-    <HomeStackScreen.Navigator>
-      <HomeStackScreen.Screen name = "Home" component={ HomeStackScreen }/>
-    </HomeStackScreen.Navigator>
+  const CategoriesStackScreen = ({ navigation }) => {
+    <CategoriesStackScreen.Navigator>
+      <CategoriesStackScreen.Screen name = "Categories" component={ Categories }/>
+      <CategoriesStackScreen.Screen name = "Subcategory" component={ Subcategory }/>
+    </CategoriesStackScreen.Navigator>
   };
   console.log(Dimensions.get('window').height);
   return (
@@ -38,7 +41,7 @@ export default function App() {
     <NavigationContainer>
       <Drawer.Navigator>
         <Drawer.Screen name = "Home" component={ Home }/>
-        <Drawer.Screen name = "Categories" component={ Categories } options = {{ title: "Categories" }}/>
+        <Drawer.Screen name = "Categories" component={ CategoriesStackScreen } options = {{ title: "Categories" }}/>
       </Drawer.Navigator>
     </NavigationContainer>
   );

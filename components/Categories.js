@@ -15,7 +15,7 @@ export default function Categories() {
             var ppd = categories.map(category => {
                 key++;
                 
-                return <CategoryResult key = { key } name = {category} />
+                return <CategoryResult key = { key } category = {category} />
                 // return <Text key = { key } >{ prodName }</Text>
             });
             return ppd;
@@ -40,7 +40,7 @@ export default function Categories() {
     .then( getcategories => { 
 
         getcategories.forEach(category => {
-            fetchedCategories.push(category.name);
+            fetchedCategories.push(category);
 
         })
         setcategory(fetchedCategories);
