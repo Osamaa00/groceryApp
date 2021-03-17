@@ -29,19 +29,20 @@ export default function App() {
   const Drawer = createDrawerNavigator();
   const { landscape } = useDeviceOrientation();
   
-  const CategoriesStackScreen = ({ navigation }) => {
-    <CategoriesStackScreen.Navigator>
-      <CategoriesStackScreen.Screen name = "Categories" component={ Categories }/>
-      <CategoriesStackScreen.Screen name = "Subcategory" component={ Subcategory }/>
-    </CategoriesStackScreen.Navigator>
-  };
+  // const CategoriesStackScreen = ({ navigation }) => {
+  //   <CategoriesStackScreen.Navigator>
+  //     <CategoriesStackScreen.Screen name = "Categories" component={ Categories }/>
+  //     <CategoriesStackScreen.Screen name = "Subcategory" component={ Subcategory }/>
+  //   </CategoriesStackScreen.Navigator>
+  // };
   console.log(Dimensions.get('window').height);
   return (
     
     <NavigationContainer>
       <Drawer.Navigator>
         <Drawer.Screen name = "Home" component={ Home }/>
-        <Drawer.Screen name = "Categories" component={ CategoriesStackScreen } options = {{ title: "Categories" }}/>
+        <Drawer.Screen name = "Categories" component={ Categories } options = {{ title: "Categories" }}/>
+        <Drawer.Screen name = "Subcategory" component={ Subcategory }/>
       </Drawer.Navigator>
     </NavigationContainer>
   );

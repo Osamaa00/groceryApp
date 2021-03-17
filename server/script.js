@@ -255,6 +255,20 @@ app.get('/categories', async (req,res) => {
     }
 });
 
+app.get('/subCategoryItems',async (req,res)=>{
+    if(req.query.Items){
+        const data = await inventory.find({subCategory: req.query.Items});
+        if(data){res.json(data)}
+        else{res.json({})}
+        
+    }
+    else{
+        res.json({data:{}})
+    }
+     
+
+});
+
 
 // app.get('/demo', async (req,res) => {    
 //     console.log(req.get("user-agent"));
@@ -265,13 +279,41 @@ app.get('/categories', async (req,res) => {
 // });
 
 
-// const prod1 = new categories ({
-//     name: "hair product",
-//     subCategory: ["shampoo", "hair perfume", "hair lotion", "hair color"],
+// const prod1 = new inventory ({
+//     name: "clear",
+//     category: "hair product",
+//     subCategory: "shampoo",
 // });
 
 
 // prod1.save();
+
+// const prod2 = new inventory ({
+//     name: "clear for men",
+//     category: "hair product",
+//     subCategory: "shampoo",
+// });
+
+
+// prod2.save();
+
+// const prod3 = new inventory ({
+//     name: "head & shoulders",
+//     category: "hair product",
+//     subCategory: "shampoo",
+// });
+
+
+// prod3.save();
+
+// const prod4 = new inventory ({
+//     name: "dove",
+//     category: "hair product",
+//     subCategory: "shampoo",
+// });
+
+
+// prod4.save();
 
 // const prod2 = new categories ({
 //     name: "skin products",

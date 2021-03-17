@@ -7,12 +7,13 @@ import Singlesubcategory from './Singlesubcategory';
 
 export default function RenderSubCategories({ category }) {
 
+    
     const subCategories = category.subCategory;
     // const [fetchedSubCategories, setSubCategories] = useState([]);
 
     const mapSubCategories = () => {
         const renderSubCategories = subCategories.map( subCategory => {
-            return <Singlesubcategory key = { subCategory } name = { subCategory }/>
+            return <Singlesubcategory key = { subCategory } name = { subCategory } category = { category } />
         } )
         return renderSubCategories;
     };

@@ -4,12 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
-export default function Singlesubcategory({ name }) {
+export default function Singlesubcategory({ name, category }) {
 
     const navigation = useNavigation();
+    // console.log(category);
     return (
         <View style={ styles.container }>
-            <TouchableOpacity style={ styles.click } onPress={ navigation.navigate('Subcategory') }>
+            <TouchableOpacity style={ styles.click } onPress={ () => navigation.navigate('Subcategory', {
+                category: category
+            })}>
                 <Image style={ styles.image } source={{uri: "https://media.allure.com/photos/5893581da08420c838db6686/master/pass/haircare.jpg?mbid=social_retweet"}}/>
                 <Text>
                     {name}

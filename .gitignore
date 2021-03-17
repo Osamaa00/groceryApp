@@ -11,8 +11,6 @@ npm-debug.*
 web-build/
 /express
 .vscode/*
-.package-lock.json
-.package.json
 # macOS
 .DS_Store
 
