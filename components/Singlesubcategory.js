@@ -11,7 +11,8 @@ export default function Singlesubcategory({ name, category }) {
     return (
         <View style={ styles.container }>
             <TouchableOpacity style={ styles.click } onPress={ () => navigation.navigate('Subcategory', {
-                category: category
+                category: category,
+                name: name
             })}>
                 <Image style={ styles.image } source={{uri: "https://media.allure.com/photos/5893581da08420c838db6686/master/pass/haircare.jpg?mbid=social_retweet"}}/>
                 <Text>

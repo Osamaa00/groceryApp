@@ -7,7 +7,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 export default function RenderItem({ item }) {
     return (
         <View>
-            <Text>{ item.name }</Text>
+            <Text>Hwllo {item.name}</Text>
         </View>
     )
 }

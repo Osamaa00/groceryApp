@@ -5,6 +5,21 @@ import RenderItem from './RenderItem';
 
 export default function RenderSubCategoryItems({ itemName }) {
 
+    const array = [{
+        name: 'head & shoulders'
+    }, {
+        name: 'clear shampoo'
+    }, {
+        name: 'dove shampoo'
+    }]
+
+    // const fetchedItems = [];
+    // array.forEach( item => {
+    //     fetchedItems.push(item);
+    //     // setItems(fetchedItems);
+    //     // setrenderItems(mapItems());
+    // } )
+
     console.log(itemName);
     const [renderItems, setrenderItems] = useState([]);
     const [items, setItems] = useState([]);
@@ -17,8 +32,7 @@ export default function RenderSubCategoryItems({ itemName }) {
        return getrenderItems; 
     };
 
-    const string = 'http://10.0.2.2:3000/subCategoryItems/Items=' + itemName;
-    
+    const string = 'http://10.0.2.2:3000/subCategoryItems?Items=' + itemName;
 
     const fetchedItems = [];
     fetch(string, {
@@ -31,14 +45,42 @@ export default function RenderSubCategoryItems({ itemName }) {
     .then( getItems => { 
 
         getItems.forEach(item => {
+            console.log(item)
             fetchedItems.push(item);
 
         })
         setItems(fetchedItems);
         setrenderItems(mapItems());
+        console.log(renderItems);
         
     })
     .catch((err) => console.log(err));
+
+    
+
+    // const fetchedItems = [];
+    // fetch(string, {
+    //     method: 'GET',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    // })
+    // .then(res => {console.log(res.json())})
+    // .then( getItems => { 
+
+    //     getItems.forEach(item => {
+    //         console.log(item)
+    //         fetchedItems.push(item);
+
+    //     })
+    //     setItems(fetchedItems);
+    //     setrenderItems(mapItems());
+    //     console.log(renderItems);
+        
+    // })
+    // .catch((err) => console.log(err));
+
+
 
     return (
         <View>
