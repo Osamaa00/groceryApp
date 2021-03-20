@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import { useState } from 'react';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import RenderSubCategoryItems from "./RenderSubCategoryItems";
 import RenderItem from './RenderItem';
 
-const FirstRoute = () => (
-  <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-);
+
 
 const SecondRoute = () => (
   <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
@@ -19,8 +17,9 @@ const SecondRoute = () => (
 // );
 
 export default function Subcategory({ route }) {
+  const [data, setdata] = useState({name:'shampoo'});
   
-  // console.log(route.params.category.subCategory);
+  // congosole.log(route.params.category.subCategory);
   const [index, setIndex] = React.useState(0);
   // const [routes, setroutes] = useState([]);
   const [screens, setscreens] = useState({});
@@ -37,6 +36,10 @@ export default function Subcategory({ route }) {
   // const subCategories = category.subCategory;
   // console.log(subCategories[0]);
   const layout = useWindowDimensions();
+
+  const FirstRoute = () => (
+    <RenderSubCategoryItems itemName={data.name} />       
+  );
   
   const temp = [];
   const debora = subCategory.forEach(route=>{
@@ -63,21 +66,21 @@ export default function Subcategory({ route }) {
     { key: 'second', title: 'Second' },
   ]);
 
-  const renderScene = ({ route }) => {
-    switch (route.key) {
-      case 'first':
-        return <FirstRoute />;
-      case 'second':
-        return <RenderSubCategoryItems itemName={name} />;
-      default:
-        return null;
-    }
-  };
+  // const renderScene = ({ route }) => {
+  //   switch (route.key) {
+  //     case 'first':
+  //       return <FirstRoute />;
+  //     case 'second':
+  //       return <RenderSubCategoryItems itemName={name} />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
-  // const renderScene = SceneMap({
-  //   first: FirstRoute,
-  //   second: renderScreen
-  // });
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute
+  });
   // console.log(obj);
 
   // const renderScene = SceneMap ({

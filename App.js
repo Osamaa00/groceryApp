@@ -39,11 +39,16 @@ export default function App() {
   return (
     
     <NavigationContainer>
-      <Drawer.Navigator>
-        <Drawer.Screen name = "Home" component={ Home }/>
-        <Drawer.Screen name = "Categories" component={ Categories } options = {{ title: "Categories" }}/>
-        <Drawer.Screen name = "Subcategory" component={ Subcategory }/>
-      </Drawer.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={ Home } options = {{ title: "Home" }} />
+        <Stack.Screen name="Search Page" component={ SearchPage } options = {{ title: "Search Page" }} />
+        <Stack.Screen name="Result Component" component={ ResultComponent } options = {{ title: "Results" }} />
+        <Stack.Screen name="Product" component={ Products } options = {{ title: "Product" }} />
+        <Stack.Screen name="Login" component={ Login } options = {{ title: "Login" }} />
+        <Stack.Screen name="Signup" component={ Signup } options = {{ title: "Signup" }} />
+        <Stack.Screen name="Cart" component={ Cart } options = {{ title: "Cart" }} />
+      </Stack.Navigator>
+    
     </NavigationContainer>
   );
 }
@@ -58,6 +63,11 @@ export default function App() {
 // <Stack.Screen name="Cart" component={ Cart } options = {{ title: "Cart" }} />
 // </Stack.Navigator>
 
+// <Drawer.Navigator>
+// <Drawer.Screen name = "Home" component={ Home }/>
+// <Drawer.Screen name = "Categories" component={ Categories } options = {{ title: "Categories" }}/>
+// <Drawer.Screen name = "Subcategory" component={ Subcategory }/>
+// </Drawer.Navigator>
 const styles = StyleSheet.create({
   
   container: {

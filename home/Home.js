@@ -2,9 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as React from 'react';
 import { useState } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Featured from './Featured';
+import Window from './Window';
 
 
 export default function Home({ navigation }) {
@@ -66,20 +67,27 @@ export default function Home({ navigation }) {
     // _retrieveData();
     
     return (
-        
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.icons} onPress={() => setCounterState(counterState + 1)}>
-                <Icon name="bars" size={30} color="#900" onPress={() => navigation.openDrawer() } />
-            </TouchableOpacity>
-            <TouchableOpacity style = {styles.search} onPress = { () => navigation.navigate('Search Page') }>
-                <Text>
-                    Search here
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.Cicon} onPress = { () => navigation.navigate('Search Page')}>
-                <Icon name="shopping-cart" size={30} color="#00FF00" onPress={ () => navigation.navigate('Cart') } />
-                <Text>{counterState}</Text>
-            </TouchableOpacity>
+        <View>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.icons} onPress={() => setCounterState(counterState + 1)}>
+                    <Icon name="bars" size={30} color="#900" onPress={() => navigation.openDrawer() } />
+                </TouchableOpacity>
+                <TouchableOpacity style = {styles.search} onPress = { () => navigation.navigate('Search Page') }>
+                    <Text>
+                        Search here
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.Cicon} onPress = { () => navigation.navigate('Search Page')}>
+                    <Icon name="shopping-cart" size={30} color="#00FF00" onPress={ () => navigation.navigate('Cart') } />
+                    <Text>{counterState}</Text>
+                </TouchableOpacity>
+            </View>
+            <View style = { { marginTop: 20 } }>
+                
+                <ScrollView>
+                    <Featured />
+                </ScrollView>
+            </View>
 
         </View>
 

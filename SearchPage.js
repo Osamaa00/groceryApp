@@ -47,11 +47,14 @@ export default function SearchPage({ navigation }) {
 
                 data.forEach(product => {
                     fetchedProducts.push(product);
+                    console.log(product);
 
                 })
             })
             .catch((err)=>console.log(err));
             setdata(fetchedProducts);
+            console.log("chal bey");
+            console.log(fetchedProducts);
         }
         else{
             // setSearchText("");
@@ -81,7 +84,7 @@ export default function SearchPage({ navigation }) {
                 </TextInput>
             </View>
             
-            <ScrollView>
+            <ScrollView style={{ width: "100%" }}>
                 { newst }   
             </ScrollView>
             
@@ -107,12 +110,16 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         width:"100%",
         padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        borderWidth:1,
+        borderColor:'#4F7942',
+        justifyContent:'center',
+        marginBottom:20,
+        borderRadius:10
     },
     searchBar:{
         height: 40,
         width:"80%",
+        textAlign:'center'
     }
     ,
     title: {
