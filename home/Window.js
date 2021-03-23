@@ -9,7 +9,7 @@ export default function window({ name }) {
         <View style={styles.container}>
             <TouchableOpacity>
                 <Image style={styles.image}
-                    source={{uri:'https://picsum.photos/200'}}
+                    source={{uri: "https://i.picsum.photos/id/985/200/200.jpg?hmac=-oC6YfQiGmm3Fyl5kVCag3-Z0VUHT0pRLIziGH1c4KU"}}
                 />
             </TouchableOpacity>
             <Button color = "green" title = "Add to cart"></Button> 
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
         marginLeft:10,
     },
     image:{
-        width:"90%",
-        height:'70%',
+        width: 200,
+        height: 200,
         borderRadius:10
     },
     btn:{

@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Featured from './Featured';
-import Window from './Window';
 
 
 export default function Home({ navigation }) {
