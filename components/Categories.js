@@ -26,11 +26,10 @@ export default function Categories() {
         // }
     }
 
-    const string = 'http://10.0.2.2:3000/categories';
     
-
+    
     const fetchedCategories = [];
-    fetch(string, {
+    fetch('http://10.0.2.2:3000/cate', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -47,15 +46,17 @@ export default function Categories() {
         setdata(mapCategories());
     })
     .catch((err)=>console.log(err));
+    // console.log(fetchedCategories);
+    // console.log(categories);
 
     return (        
-        <View style={ styles.container }>
-            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:'lightgrey', height: "100%", width: "100%" }} >
-                
-                { data }
-           
-            </ScrollView>
-        </View>
+       
+        <ScrollView>
+            
+            { data }
+        
+        </ScrollView>
+       
     )
 };
 
@@ -67,17 +68,5 @@ const styles = StyleSheet.create({
       backgroundColor: "#fff",
       alignItems: "center",
       justifyContent: "center",
-      
-    },
-
-    categoryList:{
-        width:"90%",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
-    category: {
-        fontFamily:'sans-serif',
-        fontSize: 23,
-    },
+    }
 });

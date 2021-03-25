@@ -245,7 +245,7 @@ app.get('/featured', async (req,res) => {
         }
 });
 
-app.get('/categories', async (req,res) => {
+app.get('/cate', async (req,res) => {
     const data = await categories.find();
     if(data){
         res.json(data);

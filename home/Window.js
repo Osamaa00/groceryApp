@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default function window({ name }) {
     return (
         <View style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress = { () => navigation.navigate('') }>
                 <Image style={styles.image}
                     source={{uri: "https://i.picsum.photos/id/985/200/200.jpg?hmac=-oC6YfQiGmm3Fyl5kVCag3-Z0VUHT0pRLIziGH1c4KU"}}
                 />

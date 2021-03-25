@@ -5,7 +5,7 @@ import RenderItem from './RenderItem';
 
 export default function RenderSubCategoryItems({ itemName }) {
 
-    console.log(itemName);
+    // console.log(itemName);
     const [renderItems, setrenderItems] = useState([]);
     const [items, setItems] = useState([]);
 
@@ -37,7 +37,7 @@ export default function RenderSubCategoryItems({ itemName }) {
         })
         setItems(fetchedItems);
         setrenderItems(mapItems());
-        console.log(renderItems);
+        // console.log(renderItems);
         
     })
     .catch((err) => console.log(err));

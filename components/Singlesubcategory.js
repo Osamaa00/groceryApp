@@ -15,7 +15,7 @@ export default function Singlesubcategory({ name, category }) {
                 name: name
             })}>
                 <Image style={ styles.image } source={{uri: "https://media.allure.com/photos/5893581da08420c838db6686/master/pass/haircare.jpg?mbid=social_retweet"}}/>
-                <Text>
+                <Text style={{ fontSize: 15 }}>
                     {name}
                 </Text>
             </TouchableOpacity>
@@ -29,11 +29,13 @@ const styles = StyleSheet.create({
     container: {
       padding: 10,
       flex: 1,
-      backgroundColor: "blue",
+      backgroundColor: "grey",
+      borderWidth: 1,
+      borderColor: "black",
       alignItems: "center",
       justifyContent: "center",
       width:200,
-      height:200
+      height:130
     },
     image:{
         width:30,
@@ -43,6 +45,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:'space-evenly',
         padding: 10,
+        height: "100%"
     }
 
 });

@@ -19,11 +19,13 @@ export default function RenderSubCategories({ category }) {
     };
 
     return (
-        <View>
+       
+        <View style={{ height: 150, backgroundColor: "yellow" }}>
             <View style={styles.container}>
                 {mapSubCategories()}
             </View>
         </View>
+       
     )
 }
 
@@ -32,10 +34,11 @@ const styles = StyleSheet.create({
     container: {
       padding: 10,
       flex: 1,
-      backgroundColor: "blue",
+      backgroundColor: "yellow",
       width:"100%",
       flexDirection:"row",
       flexWrap:"wrap",
+      height: 200
     },
     image:{
         width:100,

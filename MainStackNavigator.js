@@ -45,7 +45,7 @@ const MainStackNavigator = () => {
 
     return (
         <Drawer.Navigator>
-            <Drawer.Screen name = "Home" component={ StackScreen } options = {{ title: "Home" }}/>
+            <Drawer.Screen name = "Home" component={ StackScreen } />
             <Drawer.Screen name = "Categories" component={ CategoriesStackScreen } options = {{ title: "Categories" }}/>
         </Drawer.Navigator>
     )

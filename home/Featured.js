@@ -22,7 +22,7 @@ export default function Featured() {
         const mappedWindow = temp.map( item => {
             return <Window key = { item.name } name = { item.name } />
         } )
-        console.log(mappedWindow);
+        // console.log(mappedWindow);
         return mappedWindow;
     }
 

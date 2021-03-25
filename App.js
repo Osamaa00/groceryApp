@@ -10,7 +10,6 @@ import {
   StyleSheet,
 } from "react-native";
 import MainStackNavigator from './MainStackNavigator';
-import DrawerNavigator from './DrawerNavigator';
 
 export default function App() {
 

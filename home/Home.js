@@ -76,7 +76,7 @@ export default function Home({ navigation }) {
                         Search here
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.Cicon} onPress = { () => navigation.navigate('Search Page')}>
+                <TouchableOpacity style={styles.Cicon}>
                     <Icon name="shopping-cart" size={30} color="#00FF00" onPress={ () => navigation.navigate('Cart') } />
                     <Text>{counterState}</Text>
                 </TouchableOpacity>
@@ -84,6 +84,8 @@ export default function Home({ navigation }) {
             <View style = { { marginTop: 20 } }>
                 
                 <ScrollView>
+                    <Featured />
+                    <Featured />
                     <Featured />
                 </ScrollView>
             </View>
