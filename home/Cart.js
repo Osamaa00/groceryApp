@@ -1,14 +1,61 @@
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import * as React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import CartItem from '../components/CartItem';
 
+export default function Cart({ navigation, route }) {
+    
 
+    const [keys, setkeys] = useState([]);    
+    const getItems = async () => {
+        
+        const cartItems = [];
+        try {
 
-export default function Cart() {
+            await AsyncStorage.getAllKeys()
+            .then(keys => keys.forEach( key => {
+                // console.log("keys >>>", key);
+                cartItems.push(key);
+                // console.log(cartItems);
+            }))
+            if ( cartItems.length > 0 ){
+                
+                return cartItems;
+            }
+    
+            
+        } catch (error) {
+            // There was an error on the native side
+            console.log(error);
+        }
+    }
+
+    const mapCartItems = () => {
+        const getCartItems = [];
+        getItems()
+        .then(res => { 
+            res.forEach( key => {
+                console.log(key);
+                getCartItems.push(key);
+            } )
+           setkeys(getCartItems);
+        })
+        
+        var items = keys.map( item => {
+            console.log(item);
+            return <CartItem key = { item } name = { item } />
+        } )
+        console.log("items object >>> ", items);
+        return items;
+    }
+    
+    
     return (
-        <View>
-            <Text>This is Cart</Text>
-        </View>
+        <ScrollView> 
+            { mapCartItems() }
+        </ScrollView>
+    
     )
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ImageView from 'react-native-image-view';
-import { Text, View, StyleSheet, TextInput, Button, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text, View, StyleSheet, Button, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 
@@ -9,6 +9,58 @@ export default function Products({ navigation, route }) {
 
     
     const { name, products } = route.params;
+
+    const _storeData = async (key, value) => {
+        // await AsyncStorage.removeItem(key);
+        // console.log(JSON.stringify(value));
+        try {
+            await AsyncStorage.getAllKeys()
+            .then(keys => {
+                keys.forEach(key => {
+                    console.log(key);
+                })
+            })
+            const dataExist = await _retrieveData( key );
+            if ( dataExist ){
+            
+                dataExist.quantity += 1;
+                
+                await AsyncStorage.setItem(
+                    key,
+                    JSON.stringify(dataExist),
+                );
+            }
+            else{
+                console.log("No existing data");
+                await AsyncStorage.setItem(
+                    key,
+                    JSON.stringify(value)
+                );
+            }
+    
+            
+        } catch (error) {
+            // There was an error on the native side
+            console.log(error);
+        }
+    }
+    const _retrieveData = async (key) => {
+        try {   
+            
+            const data = await AsyncStorage.getItem(key);
+        
+            if (data !== undefined) {
+                console.log("data >>> ", data);
+                const jsonData = JSON.parse(data);
+                console.log("printing data >>> ", jsonData);
+                return jsonData;
+            }
+        } catch (error) {
+            // There was an error on the native side
+            console.log(error);
+        }
+    }
+    
     return (
         <View style = { styles.container }>
             <View style={styles.sliderContainer}>
@@ -50,7 +102,8 @@ export default function Products({ navigation, route }) {
                 </Text>
             </View>
             <View style={ styles.btn }>
-              <Button title="Add to cart" color='green'></Button>
+              <Button title="Add to cart" color='green' onPress={ () => _storeData(products.name, { name: products.name, quantity: 1 }) }></Button>
+              <Button title="GET" color='yellow' onPress={ () => _retrieveData(products.name) }></Button>
             </View>
         </View>
     )

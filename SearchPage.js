@@ -13,7 +13,7 @@ export default function SearchPage({ navigation }) {
         if ( fetchedData.length > 0 ){
             var ppd = fetchedData.map(prodName => {
                 key++;
-                console.log(prodName);
+                // console.log(prodName);
                 return <ResultComponent key = { key } name = { prodName.name } products = { prodName } />
                 // return <Text key = { key } >{ prodName }</Text>
             });
@@ -35,7 +35,7 @@ export default function SearchPage({ navigation }) {
 
             const fetchedProducts = [];
             const string = "http://10.0.2.2:3000/search?name="+ name;
-            console.log(string);
+            // console.log(string);
             const response = await fetch(string, {
                 method: 'GET',
                 headers: {
@@ -47,19 +47,19 @@ export default function SearchPage({ navigation }) {
 
                 data.forEach(product => {
                     fetchedProducts.push(product);
-                    console.log(product);
+                    // console.log(product);
 
                 })
             })
             .catch((err)=>console.log(err));
             setdata(fetchedProducts);
-            console.log("chal bey");
-            console.log(fetchedProducts);
+            // console.log("chal bey");
+            // console.log(fetchedProducts);
         }
         else{
             // setSearchText("");
             setnewst([<Text key = { 0 }>Hello</Text>]);
-            console.log("asd");
+            // console.log("asd");
         }
     };
     

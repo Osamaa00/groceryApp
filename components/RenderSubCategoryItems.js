@@ -31,7 +31,7 @@ export default function RenderSubCategoryItems({ itemName }) {
     .then( getItems => { 
 
         getItems.forEach(item => {
-            console.log(item)
+            // console.log(item)
             fetchedItems.push(item);
 
         })
