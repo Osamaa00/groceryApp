@@ -12,6 +12,15 @@ export default function Home({ navigation }) {
     
     
     const [counterState, setCounterState] = useState(0);
+    const updateCart = async () => {
+        await AsyncStorage.getAllKeys()
+        .then( res => {
+            if ( res ){
+                setCounterState(res.length);
+                console.log(res.length);
+            }
+        } )
+    }
     
     const _storeData = async (key, value) => {
         try {
@@ -21,17 +30,6 @@ export default function Home({ navigation }) {
                 await AsyncStorage.setItem(
                     key,
                     JSON.stringify([...dataExist, value]),
-                    // JSON.stringify([
-                    // {
-                    //     itemid : "143",
-                    //     itemq : "2",
-                    //     price: "1000"
-                    // },
-                    // {
-                    //     itemid : "143",
-                    //     itemq : "2",
-                    //     price: "1000"
-                    // }])
                 );
             }
             else{
@@ -64,6 +62,7 @@ export default function Home({ navigation }) {
 
     // _storeData();
     // _retrieveData();
+    updateCart();
     
     return (
         <View>
@@ -78,7 +77,7 @@ export default function Home({ navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.Cicon}>
                     <Icon name="shopping-cart" size={30} color="#00FF00" onPress={ () => navigation.navigate('Cart') } />
-                    <Text>{counterState}</Text>
+                    <Text>{ counterState }</Text>
                 </TouchableOpacity>
             </View>
             <View style = { { marginTop: 20 } }>

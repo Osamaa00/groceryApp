@@ -6,7 +6,7 @@ import CartItem from '../components/CartItem';
 
 export default function Cart({ navigation, route }) {
     
-
+    
     const [keys, setkeys] = useState([]);    
     const getItems = async () => {
         
@@ -34,26 +34,33 @@ export default function Cart({ navigation, route }) {
     const mapCartItems = () => {
         const getCartItems = [];
         getItems()
-        .then(res => { 
-            res.forEach( key => {
-                console.log(key);
-                getCartItems.push(key);
-            } )
-           setkeys(getCartItems);
+        .then(res => {
+            if ( res ){ 
+                res.forEach( key => {
+                    // console.log(key);
+                    getCartItems.push(key);
+                } )
+                setkeys(getCartItems);
+            }
+            else{
+                setkeys([]);
+            }
         })
         
+        
         var items = keys.map( item => {
-            console.log(item);
+            // console.log(item);
             return <CartItem key = { item } name = { item } />
         } )
-        console.log("items object >>> ", items);
+        // console.log("items object >>> ", items);
         return items;
     }
     
-    
+    const data = mapCartItems();
+
     return (
-        <ScrollView> 
-            { mapCartItems() }
+        <ScrollView contentContainerStyle = {{ alignItems: "center", padding: 10 }}> 
+            { data }
         </ScrollView>
     
     )
