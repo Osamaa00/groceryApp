@@ -27,7 +27,7 @@ const CartItem = ({ name }) => {
                         );
                     }
                     else if ( dataExist.quantity == 1 ){
-                        console.log("helooo");
+                        // console.log("helooo");
                         await AsyncStorage.removeItem( key );
                     }
     
@@ -35,7 +35,8 @@ const CartItem = ({ name }) => {
             }            
             
         } catch (error) {
-            // There was an error on the native side
+            // There was an error on the native side 
+            
             console.log(error);
         }
     }

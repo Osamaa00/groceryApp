@@ -1,25 +1,33 @@
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Featured from './Featured';
 
 
 export default function Home({ navigation }) {
-    
-    
-    
+        
     const [counterState, setCounterState] = useState(0);
+    // const [cartState, setcartState] = useState(0);
+    // useEffect(() => {
+
+    //     updateCart();
+
+    // })
+
+    // const updateFinal = () => {return counterState};
     const updateCart = async () => {
         await AsyncStorage.getAllKeys()
         .then( res => {
             if ( res ){
                 setCounterState(res.length);
-                console.log(res.length);
+                // console.log(res.length);
             }
         } )
+        // console.log("counter >>> ", counterState);
+        
     }
     
     const _storeData = async (key, value) => {
@@ -60,14 +68,19 @@ export default function Home({ navigation }) {
         }
     }
 
-    // _storeData();
+    // _storeData("credentials", { username: "admin", password: "admin", token: "abcd" });
+    AsyncStorage.setItem(
+        "credentials",
+        JSON.stringify({ username: "admin", password: "", token: "abcd" }),
+    );
     // _retrieveData();
-    updateCart();
+    // const temp = updateCart().then();
+    // console.log(temp);
     
     return (
         <View>
             <View style={styles.container}>
-                <TouchableOpacity style={styles.icons} onPress={() => setCounterState(counterState + 1)}>
+                <TouchableOpacity style={styles.icons}>
                     <Icon name="bars" size={30} color="#900" onPress={() => navigation.openDrawer() } />
                 </TouchableOpacity>
                 <TouchableOpacity style = {styles.search} onPress = { () => navigation.navigate('Search Page') }>
@@ -76,7 +89,7 @@ export default function Home({ navigation }) {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.Cicon}>
-                    <Icon name="shopping-cart" size={30} color="#00FF00" onPress={ () => navigation.navigate('Cart') } />
+                    <Icon name="shopping-cart" size={30} color="#00FF00" onPress={ () => navigation.navigate('Cart', { update: updateCart }) } />
                     <Text>{ counterState }</Text>
                 </TouchableOpacity>
             </View>

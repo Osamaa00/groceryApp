@@ -8,6 +8,7 @@ import Home from "./home/Home";
 import SearchPage from "./SearchPage";
 import ResultComponent from "./components/ResultComponent";
 import Products from "./components/Products";
+import Payment from "./components/Payment";
 import Cart from "./home/Cart";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Categories from './components/Categories';
@@ -29,6 +30,7 @@ const MainStackNavigator = () => {
                 <Stack.Screen name="Login" component={ Login } options = {{ title: "Login" }} />
                 <Stack.Screen name="Signup" component={ Signup } options = {{ title: "Signup" }} />
                 <Stack.Screen name="Cart" component={ Cart } options = {{ title: "Cart" }} />
+                <Stack.Screen name="Payment" component={ Payment } options = {{ title: "Paisa" }} />
             </Stack.Navigator>
         )
     }

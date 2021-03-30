@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Button, Image, TouchableOpacity, ScrollView } from 'react-native';
 import CartItem from '../components/CartItem';
 
 export default function Cart({ navigation, route }) {
     
     
-    const [keys, setkeys] = useState([]);    
+    const [keys, setkeys] = useState([]);
+    route.params.update();
+
     const getItems = async () => {
         
         const cartItems = [];
@@ -25,6 +27,23 @@ export default function Cart({ navigation, route }) {
             }
     
             
+        } catch (error) {
+            // There was an error on the native side
+            console.log(error);
+        }
+    }
+
+    const _retrieveData = async (key) => {
+        try {   
+            
+            const data = await AsyncStorage.getItem(key);
+        
+            if ( data ) {
+                // console.log("data >>> ", data);
+                const jsonData = JSON.parse(data);
+                // console.log("printing data >>> ", jsonData);
+                return jsonData;
+            }
         } catch (error) {
             // There was an error on the native side
             console.log(error);
@@ -58,11 +77,25 @@ export default function Cart({ navigation, route }) {
     
     const data = mapCartItems();
 
+    const checkCartStorage = async () => {
+        const creds = await _retrieveData('credentials');
+        if( creds?.username && creds?.password && creds?.token ){
+            return true;
+        } 
+        else{
+            return false;
+        }
+    }
+
     return (
-        <ScrollView contentContainerStyle = {{ alignItems: "center", padding: 10 }}> 
-            { data }
-        </ScrollView>
-    
+        <View>
+            <View style = {{ height: "90%", marginBottom: 10 }}>
+                <ScrollView contentContainerStyle = {{ alignItems: "center", padding: 10 }}> 
+                    { data }
+                </ScrollView>
+            </View>
+            <Button title="Paisay Kaddo" color = "red" onPress = { () => checkCartStorage().then(res => res? navigation.navigate("Payment"): navigation.navigate("Login"))  }></Button>
+        </View>
     )
 }
 

@@ -1,17 +1,21 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions,Button } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-export default function window({ name }) {
+export default function Window({ name }) {
+
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress = { () => navigation.navigate('') }>
+            <TouchableOpacity onPress = { () => navigation.navigate('Product', { products: { name: name } }) }>
                 <Image style={styles.image}
                     source={{uri: "https://i.picsum.photos/id/985/200/200.jpg?hmac=-oC6YfQiGmm3Fyl5kVCag3-Z0VUHT0pRLIziGH1c4KU"}}
                 />
             </TouchableOpacity>
+            <Text> { name } </Text>
             <Button color = "green" title = "Add to cart"></Button> 
         </View>
     )

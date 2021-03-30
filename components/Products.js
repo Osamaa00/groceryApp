@@ -17,7 +17,7 @@ export default function Products({ navigation, route }) {
             await AsyncStorage.getAllKeys()
             .then(keys => {
                 keys.forEach(key => {
-                    console.log(key);
+                    // console.log(key);
                 })
             })
             const dataExist = await _retrieveData( key );
@@ -50,7 +50,7 @@ export default function Products({ navigation, route }) {
             const data = await AsyncStorage.getItem(key);
         
             if (data !== undefined) {
-                console.log("data >>> ", data);
+                // console.log("data >>> ", data);
                 const jsonData = JSON.parse(data);
                 console.log("printing data >>> ", jsonData);
                 return jsonData;
