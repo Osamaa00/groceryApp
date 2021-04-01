@@ -88,13 +88,17 @@ export default function Cart({ navigation, route }) {
     }
 
     return (
-        <View>
+        <View style={{alignItems:'center'}}>
             <View style = {{ height: "90%", marginBottom: 10 }}>
                 <ScrollView contentContainerStyle = {{ alignItems: "center", padding: 10 }}> 
                     { data }
                 </ScrollView>
             </View>
-            <Button title="Paisay Kaddo" color = "red" onPress = { () => checkCartStorage().then(res => res? navigation.navigate("Payment"): navigation.navigate("Login"))  }></Button>
+            <View style = {{ width:"90%", borderRadius:20,height:50 }}>
+                <Button  
+                title="Paisay Kaddo" color = "red"
+                onPress = { () => checkCartStorage().then(res => res? navigation.navigate("Payment"): navigation.navigate("Login"))  }></Button>
+            </View>
         </View>
     )
 }

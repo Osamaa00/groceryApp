@@ -64,7 +64,7 @@ app.post('/users/login', async ( req, res ) => {
     if( req.headers.username && req.headers.password ){
             const data = await User.find({username: req.headers.username});
             console.log(data);
-        if( data ){
+        if( data[0] ){
             console.log("USERNAME: " + data[0].username);
             const { username, password } =  data[0];
             
@@ -93,10 +93,10 @@ app.post('/users/login', async ( req, res ) => {
                         console.log("Username: " + username);
                     }
                     else if((await active_tokens.find({token:req.headers.token})).length==0){
-                        res.send('titu patiyaan na ker');
+                        res.json({status : 'titu patiyaan na ker'});
                     }
                     else{
-                        res.send('already loggedin')
+                        res.json({status: "200"});
                     }
                 }
                 else{
@@ -110,7 +110,7 @@ app.post('/users/login', async ( req, res ) => {
             
         }
         else{
-            res.json({status:"usererr"})       }
+            res.json({status:"user err"})       }
     }
     else{
         res.json({status:"masti"})

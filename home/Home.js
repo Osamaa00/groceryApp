@@ -71,7 +71,7 @@ export default function Home({ navigation }) {
     // _storeData("credentials", { username: "admin", password: "admin", token: "abcd" });
     AsyncStorage.setItem(
         "credentials",
-        JSON.stringify({ username: "admin", password: "", token: "abcd" }),
+        JSON.stringify({ username: "user6", password: "user6", token: "eyJhbGciOiJIUzI1NiJ9.dXNlcjY.ejRjaveoYHJXu5XSfDpGsp3VK3aca1IYY5WhObu9EWI" }),
     );
     // _retrieveData();
     // const temp = updateCart().then();
