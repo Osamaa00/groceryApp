@@ -3,10 +3,10 @@ import { View, Text, Image, StyleSheet, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withOrientation } from 'react-navigation';
 
-const CartItem = ({ name }) => {
+const CartItem = ({ name, set,se }) => {
 
     const [quantity, setquantity] = useState(0);
-
+    
     const _storeData = async (key, flag) => {
         try {
             const dataExist = await _retrieveData( key );
@@ -32,7 +32,8 @@ const CartItem = ({ name }) => {
                     }
     
                 }
-            }            
+            }
+            set(!se);          
             
         } catch (error) {
             // There was an error on the native side 
@@ -41,10 +42,8 @@ const CartItem = ({ name }) => {
         }
     }
     const _retrieveData = async (key) => {
-        try {   
-            
+        try {          
             const data = await AsyncStorage.getItem(key);
-        
             if ( data ) {
                 // console.log("data >>> ", data);
                 const jsonData = JSON.parse(data);
@@ -56,9 +55,7 @@ const CartItem = ({ name }) => {
             console.log(error);
         }
     }
-
     async function getQuantity ( key ) {
-        
         const obj  = await _retrieveData( key );
         if ( obj ){
             setquantity(obj.quantity);
@@ -70,14 +67,28 @@ const CartItem = ({ name }) => {
 
     return (
         <View style={styles.container}>
-            <Image style = { styles.image } source={{ uri:"https://i.picsum.photos/id/982/200/200.jpg?hmac=X2ocb-PEJJpYgQn2Ib8SKCaWKsI-2hGcsvwZjWStNAw" }} />
-            <Text style = {{ fontSize: 20 }}>{ name }</Text>
-            <View style = { styles.button }>
-                <Button title="-" onPress={ () => _storeData( name, false ) } color="#841584" style = { { width: 50 } }  ></Button>
+            <View style={{alignItems:"center",width:120,justifyContent:'center',height:'100%'}}>
+                <Image style = { styles.image } source={{ uri:"https://i.picsum.photos/id/982/200/200.jpg?hmac=X2ocb-PEJJpYgQn2Ib8SKCaWKsI-2hGcsvwZjWStNAw" }} />
             </View>
-            <Text style = {{ fontSize: 20 }}>{ quantity }</Text>
-            <View style = { styles.button }>
-                <Button title="+" onPress={ () => _storeData( name, true ) } color="#841584"></Button>
+            <View style={{width:"60%",justifyContent:'center',alignItems:'center'}}>
+                <View style={{ height:"40%"}}>
+                    <Text style = {{ fontSize: 22 }}>{ name }</Text>
+                </View>
+                <View style={{flexDirection:"row",width:"70%",justifyContent:'space-between'}}>
+                    <View style = { styles.button }>
+                        <Button title="-" onPress={ () => _storeData( name, false ) } color="green" ></Button>
+                    </View>
+                    <Text style = {{ fontSize: 20, color: "grey" }}>{ quantity }</Text>
+                    <View style = { styles.button }>
+                        <Button title="+" onPress={ () => _storeData( name, true ) } color="green"></Button>
+                    </View>
+                </View>
+                <View style={{marginTop:10}} >
+                    <Text style = {{ fontSize: 20,color:'black',fontWeight:'bold'}}>
+                        {quantity*100}
+                    </Text>
+                </View>
+
             </View>
         </View>
     )
@@ -91,22 +102,36 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:'center',
         flexDirection:'row',
-        justifyContent:'space-evenly',
+        justifyContent:'space-between',
         padding:10,
         width: "95%",
         borderWidth: 1,
-        borderColor: "yellow",
+        borderColor: "grey",
         height:200,
-        backgroundColor:'dodgerblue',
+        backgroundColor:'#FAFAFA',
         marginTop: 10,
+        shadowColor: "#000",
+        borderRadius:10,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 12,
     },
 
     button: {
-        width: 50,
+        width:50,
+        backgroundColor:'red',
+        borderRadius:2
+
     },
 
     image: {
         height: 100,
-        width: 100
+        width: 100,
+        borderRadius:10
     }
 });

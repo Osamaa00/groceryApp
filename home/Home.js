@@ -8,6 +8,8 @@ import Featured from './Featured';
 
 
 export default function Home({ navigation }) {
+
+    const exceptions = ['credentials'];
         
     const [counterState, setCounterState] = useState(0);
     // const [cartState, setcartState] = useState(0);
@@ -22,7 +24,9 @@ export default function Home({ navigation }) {
         await AsyncStorage.getAllKeys()
         .then( res => {
             if ( res ){
-                setCounterState(res.length);
+                
+                // comeback here soon to change this
+                setCounterState(res.length - exceptions.length);
                 // console.log(res.length);
             }
         } )

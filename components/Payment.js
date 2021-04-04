@@ -10,7 +10,6 @@ const Payment = ({ navigation }) => {
             const data = await AsyncStorage.getItem(key);
             
             if ( data ) {
-                
                 const jsonData = JSON.parse(data);
                 return jsonData;
             }
