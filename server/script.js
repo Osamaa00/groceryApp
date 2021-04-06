@@ -32,6 +32,8 @@ const User = mongoose.model("users");
 const active_tokens = mongoose.model("active_tokens");
 const inventory = mongoose.model("inventory");
 const categories = mongoose.model("category");
+
+
 app.post('/signup', async ( req, res ) => {
 
     if( req.headers.username && req.headers.password ){
@@ -45,17 +47,17 @@ app.post('/signup', async ( req, res ) => {
             console.log ( `hashed password here:  ${hashed}` );
             const user = new User({username: username, password: hashed});
             user.save();
-            res.json(user);
+            res.json( { status: "success" } );
         }
         
         else{
-            res.send("User with this username already exists");
+            res.json({ status: "user exists" });
             
         }
     }
 
     else{
-        res.send("Username or password missing")
+        res.json({status : "missing"})
     }
 });
 
@@ -75,19 +77,21 @@ app.post('/users/login', async ( req, res ) => {
                         const getUser = await active_tokens.find({ username: username });
                         if ( getUser.length > 0 ){
                             const activeDevices = getUser[0].devices;
+
+                            // accessing last item
                             const deviceId = activeDevices[activeDevices.length - 1];
                             // console.log(deviceId);
                             // activeDevices.push(deviceId + 1);
                             // console.log(activeDevices);
                             const update = await active_tokens.updateOne({username:username, token:token}, { $push: { devices: deviceId + 1 } });
-                            if ( update ) res.send('successful');
+                            if ( update ) res.json({token: token, deviceId: deviceId + 1, status : "successful"});
                             
                             
                         }
                         else{
-                            const store = new active_tokens({username:username,token:token, devices: [1]});
+                            const store = new active_tokens({username:username, token:token, devices: [1]});
                             store.save();
-                            res.send("successful");
+                            res.json({deviceId: 1, token: token, status : "successful"});
                         }
                         // res.json(user1);
                         console.log("Username: " + username);
@@ -118,27 +122,31 @@ app.post('/users/login', async ( req, res ) => {
 });
 
 
-app.post('/logout',async (req,res)=>{
-   if(req.headers.token && req.headers.username && req.headers.deviceId){
-        const data=await active_tokens.find({token:req.headers.token})
+app.post('/logout', async (req,res)=>{
+   
+    if(req.headers.token && req.headers.username && req.headers.deviceid){
+        const data = await active_tokens.find({token:req.headers.token})
         if(data.length>0){
             if((jwt.verify(req.headers.token,process.env.my_secret_key))==req.headers.username){
-                const index = data[0].devices.indexOf(req.headers.deviceId);
-                delete data[0].devices[index];
+
+                const index = data[0].devices.indexOf(req.headers.deviceid);
+                // delete data[0].devices[index];
+                data[0].devices.splice(index, 1)
+                // res.json({ deleted: data[0].devices })
                 const update = await active_tokens.updateOne({token:req.headers.token}, {devices: data[0].devices});
-                res.send('successful');
+                res.json({ status: "successful" });
             }
             else{
-                res.send("User doesnot match token")
+                res.json({status : "User doesnot match token"})
             }    
         }
         else{
-            res.send('token not valid!')
+            res.json({status : 'invalid token'})
         } 
-   }
-   else{
-       res.send('no token!')
-   } 
+    }
+    else{
+       res.json({status : 'no token'})
+    } 
 });
 
 
