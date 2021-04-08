@@ -7,10 +7,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Featured from './Featured';
 
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, func }) {
 
     const exceptions = ['credentials'];
-        
+    
     const [counterState, setCounterState] = useState(0);
     // const [cartState, setcartState] = useState(0);
     // useEffect(() => {
@@ -72,15 +72,18 @@ export default function Home({ navigation }) {
         }
     }
 
+    // AsyncStorage.removeItem("credentials");
     // _storeData("credentials", { username: "admin", password: "admin", token: "abcd" });
-    AsyncStorage.setItem(
-        "credentials",
-        JSON.stringify({ username: "user6", password: "user6", token: "eyJhbGciOiJIUzI1NiJ9.dXNlcjY.ejRjaveoYHJXu5XSfDpGsp3VK3aca1IYY5WhObu9EWI" }),
-    );
+    // AsyncStorage.setItem(
+    //     "credentials",
+    //     JSON.stringify({ username: "user6", password: "user6", token: "eyJhbGciOiJIUzI1NiJ9.dXNlcjY.ejRjaveoYHJXu5XSfDpGsp3VK3aca1IYY5WhObu9EWI" }),
+    // );
     // _retrieveData();
     // const temp = updateCart().then();
     // console.log(temp);
-    
+    // useEffect(() => {
+    //     func()
+    // }, [])
     return (
         <View>
             <View style={styles.container}>

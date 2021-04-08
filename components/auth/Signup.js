@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Signup = ( { navigation } ) => {
 
@@ -10,6 +11,36 @@ const Signup = ( { navigation } ) => {
         console.log(utext);
         console.log(ptext);
     };
+
+    const signUser = () => {
+        if(utext?.length>= 4 && ptext?.length >= 4){
+            fetch('http://10.0.2.2:3000/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'username': utext,
+                    'password': ptext,
+                },
+            })
+            .then(res => res.json())
+            .then( verify => {
+                console.log("data returned >> ", verify)
+                if(verify?.status == "success"){
+                    navigation.navigate("Login");
+                }
+                else if(verify?.status=='user exists'){
+                    console.log("Username Already Taken")
+                }
+                else{
+                    console.log("Something went wrong")
+                }
+            })
+            .catch((err)=>console.log(err));
+        }
+        else{
+            console.log("password or username too short")
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -31,7 +62,7 @@ const Signup = ( { navigation } ) => {
                 />
             </View>
             <View style={styles.buttonLogin}>
-                <Text style={{color: "white"}} onPress = { signup }>SignUp</Text>
+                <Text style={{color: "white"}} onPress = { () => signUser() }>SignUp</Text>
             </View>
 
             <Button title="Go back" onPress={() => navigation.goBack()} />

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const Login = ( { navigation, route } ) => {
 
+    // const navigation = useNavigation();
     const [utext, setutext] = useState("");
     const [ptext, setptext] = useState("");
     const login = () => {
@@ -11,6 +14,44 @@ const Login = ( { navigation, route } ) => {
         setutext("");
         setptext("");
     };
+    const auth = () => {
+        if(utext?.length>= 4 && ptext?.length >= 4){
+            fetch('http://10.0.2.2:3000/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'username': utext,
+                    'password': ptext,
+                },
+            })
+            .then(res => res.json())
+            .then( async verify => {
+                console.log("data returned >> ", verify)
+                if(verify?.status == "successful"){
+                    if(verify.token && verify.deviceId){
+
+                        const data = {
+                            username: utext,
+                            password: ptext,
+                            token: verify.token,
+                            deviceId: verify.deviceId                      
+                        }
+                        const setData = await AsyncStorage.setItem( "credentials", JSON.stringify( data ));
+                    }
+                    navigation.navigate("Home");
+                }
+                else{
+
+                    console.log("invalid credentials")
+                }
+            })
+            .catch((err)=>console.log(err));
+        }
+        else{
+            console.log("password or username too short")
+        }
+    }
+
 
     // const { uname, pswd } = route.params;
     // console.log(JSON.stringify(uname));
@@ -37,7 +78,7 @@ const Login = ( { navigation, route } ) => {
             </View>
 
             <View style={styles.buttonLogin}>
-                <Text style={{color: "white"}} onPress={login}>SignIn</Text>
+                <Text style={{color: "white"}} onPress={ () => auth() }>SignIn</Text>
             </View>
 
             <View style={styles.other}>

@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Login from "./components/auth/Login";
@@ -20,10 +21,50 @@ const MainStackNavigator = () => {
 
     // const [data, setdata] = useState([]);
     const [login, setLogin] = useState(false);
+    // const navigation = useNavigation();
+    // const [refresh, setrefresh] = useState(0);
 
     const Stack = createStackNavigator();
     const CategoriesStack = createStackNavigator();
     const Drawer = createDrawerNavigator();
+
+    const refresh = () => {
+        setLogin(!login);
+        setLogin(!login);
+    }
+
+    const logout = async () => {
+        const data = await _retrieveData( "credentials" );
+        console.log("token >>> ", data.token);
+        if( data?.token && data?.username && data?.deviceId ){
+            fetch('http://10.0.2.2:3000/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'username': data.username,
+                    'token': data.token,
+                    'deviceid': data.deviceId
+                },
+            })
+            .then(res => res.json())
+            .then( async verify => {
+                console.log("data returned >> ", verify)
+                if(verify?.status == "successful"){
+                    await AsyncStorage.removeItem('credentials');
+                    console.log("Successfully logged out")
+                    // navigation.navigate("Home")
+                }
+                else{
+                    console.log("Something went wrong")
+                    await AsyncStorage.removeItem('credentials');
+                }
+            })
+            .catch((err)=>console.log(err));
+        }
+        else{
+            console.log("Refresh please")
+        }
+    }
 
     const _retrieveData = async (key) => {
         try {   
@@ -40,6 +81,11 @@ const MainStackNavigator = () => {
             // There was an error on the native side
             console.log(error);
         }
+    }
+
+    const alternative = () => {
+        logout();
+        return null;
     }
 
     const checkLogin = async () => {
@@ -68,7 +114,7 @@ const MainStackNavigator = () => {
     const StackScreen = ({ navigation }) => {
         return (
             <Stack.Navigator>
-                <Stack.Screen name="Home" component={ Home } options = {{ title: "Home" }} />
+                <Stack.Screen name="Home">{ props => <Home {...props} func={ refresh } /> }</Stack.Screen>
                 <Stack.Screen name="Search Page" component={ SearchPage } options = {{ title: "Search Page" }} />
                 <Stack.Screen name="Result Component" component={ ResultComponent } options = {{ title: "Results" }} />
                 <Stack.Screen name="Product" component={ Products } options = {{ title: "Product" }} />
@@ -79,25 +125,6 @@ const MainStackNavigator = () => {
             </Stack.Navigator>
         )
     }
-
-    
-    // var temp = [];
-
-    // checkLogin().then( res => {
-
-    //     res.forEach( item => {
-
-    //         console.log("item >> ", item);
-    //         temp.push(item);
-
-    //     } )
-    //     // console.log(temp);
-    //     setdata( temp )
-    //     // return temp;
-    // });
-    
-    // console.log("array >> ", data);
-    
 
     const CategoriesStackScreen = ({ navigation }) => {
         return (
@@ -113,7 +140,7 @@ const MainStackNavigator = () => {
             <Drawer.Screen name = "Home" component={ StackScreen } />
             <Drawer.Screen name = "Categories" component={ CategoriesStackScreen } options = {{ title: "Categories" }}/>
             {login?
-            <Drawer.Screen name = "Signup" component={ Signup } options = {{ title: "Logout" }}/>
+            <Drawer.Screen name = "Login" component={ alternative } options = {{ title: "Logout" }}/>
             :
             <Drawer.Screen name = "Login" component={ Login } options = {{ title: "Login" }}/>}        
         </Drawer.Navigator>  
