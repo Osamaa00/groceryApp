@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Featured from './Featured';
 
 
-export default function Home({ navigation, func }) {
+export default function Home({ navigation, refresh,setrefresh }) {
 
     const exceptions = ['credentials'];
     
@@ -72,6 +72,11 @@ export default function Home({ navigation, func }) {
         }
     }
 
+    AsyncStorage.setItem("address", JSON.stringify({
+        house: '4',
+        street: '1', 
+        area: 'IDhar UDhar'
+    }))
     // AsyncStorage.removeItem("credentials");
     // _storeData("credentials", { username: "admin", password: "admin", token: "abcd" });
     // AsyncStorage.setItem(
@@ -88,7 +93,7 @@ export default function Home({ navigation, func }) {
         <View>
             <View style={styles.container}>
                 <TouchableOpacity style={styles.icons}>
-                    <Icon name="bars" size={30} color="#900" onPress={() => navigation.openDrawer() } />
+                    <Icon name="bars" size={30} color="#900" onPress={() => {navigation.openDrawer();setrefresh(!refresh);} } />
                 </TouchableOpacity>
                 <TouchableOpacity style = {styles.search} onPress = { () => navigation.navigate('Search Page') }>
                     <Text>

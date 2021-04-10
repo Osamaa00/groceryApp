@@ -1,7 +1,8 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { View, Text } from 'react-native';
+import Payment1 from './Payment1';
 
 const Payment = ({ navigation }) => {
     const [Login, setLogin] = useState(false)
@@ -48,10 +49,12 @@ const Payment = ({ navigation }) => {
             setLogin(false);
         }
     }
-    checkLogin();
+    useEffect(() => {
+        checkLogin();
+    }, []);
     return (
-        <View>
-            {Login?<Text>I reached HERE!</Text>:<Text>Titopati</Text>}
+        <View style={{alignItems:'center',justifyContent:'center'}}>
+            {Login?<Payment1 />:<Text>Titopati</Text>}
         </View>
     )
 }

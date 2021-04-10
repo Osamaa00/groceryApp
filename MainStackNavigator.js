@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,26 +16,31 @@ import Cart from "./home/Cart";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Categories from './components/Categories';
 import Subcategory from './components/Subcategory';
+import Order from './components/Order';
 
 const MainStackNavigator = () => {
 
     // const [data, setdata] = useState([]);
     const [login, setLogin] = useState(false);
     // const navigation = useNavigation();
-    // const [refresh, setrefresh] = useState(0);
+    const [refresh, setrefresh] = useState(0);
 
     const Stack = createStackNavigator();
     const CategoriesStack = createStackNavigator();
     const Drawer = createDrawerNavigator();
 
-    const refresh = () => {
+    useEffect(() => {
+        Rrefresh();
+    }, [refresh])
+
+    const Rrefresh = () => {
         setLogin(!login);
         setLogin(!login);
     }
 
     const logout = async () => {
         const data = await _retrieveData( "credentials" );
-        console.log("token >>> ", data.token);
+        // console.log("token >>> ", data.token);
         if( data?.token && data?.username && data?.deviceId ){
             fetch('http://10.0.2.2:3000/logout', {
                 method: 'POST',
@@ -109,12 +114,14 @@ const MainStackNavigator = () => {
         }
     }
 
-    checkLogin();
+    useEffect(() => {
+        checkLogin()
+    }, [])
 
     const StackScreen = ({ navigation }) => {
         return (
             <Stack.Navigator>
-                <Stack.Screen name="Home">{ props => <Home {...props} func={ refresh } /> }</Stack.Screen>
+                <Stack.Screen name="Home">{ props => <Home {...props} refresh={ refresh } setrefresh={setrefresh} /> }</Stack.Screen>
                 <Stack.Screen name="Search Page" component={ SearchPage } options = {{ title: "Search Page" }} />
                 <Stack.Screen name="Result Component" component={ ResultComponent } options = {{ title: "Results" }} />
                 <Stack.Screen name="Product" component={ Products } options = {{ title: "Product" }} />
@@ -122,6 +129,7 @@ const MainStackNavigator = () => {
                 <Stack.Screen name="Signup" component={ Signup } options = {{ title: "Signup" }} />
                 <Stack.Screen name="Cart" component={ Cart } options = {{ title: "Cart" }} />
                 <Stack.Screen name="Payment" component={ Payment } options = {{ title: "Paisa" }} />
+                <Stack.Screen name="Order" component={ Order } options = {{ title: "Order Confirmation" }} />
             </Stack.Navigator>
         )
     }

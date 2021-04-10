@@ -32,6 +32,7 @@ const User = mongoose.model("users");
 const active_tokens = mongoose.model("active_tokens");
 const inventory = mongoose.model("inventory");
 const categories = mongoose.model("category");
+const orders = mongoose.model("orders");
 
 
 app.post('/signup', async ( req, res ) => {
@@ -161,6 +162,26 @@ app.get('/search', async (req,res) => {
     }
 });
 
+app.post('/placeOrder', async(req,res)=>{
+    if(req.headers.cart && req.headers.credentials){
+        const { username, password }= req.headers.credentials;
+        const data = await User.find({username: username});
+        if(data[0]){
+            const getPassword = data[0].password;
+            if( await bcrypt.compare( password, getPassword )){
+                const array = [];
+                const quantityArray = [];
+                req.headers.cart.forEach( item => {
+                    array.push(item.name);
+                    quantityArray.push(item.quantity);
+                } )
+                const orderPlaced = new orders ({orderid: 1, username: username, items: { id:[1], name: array, quantity: quantityArray } })
+                orderPlaced.save();
+                res.json({ status: "success" });
+            }
+        }
+    }
+})
 
 app.post('/proceed', async (req, res)=>{
     if( req.headers.token && req.headers.username && req.headers.password ){
@@ -274,8 +295,9 @@ app.get('/subCategoryItems',async (req,res)=>{
         res.json({data:{}})
     }
      
-
 });
+
+
 
 
 // app.get('/demo', async (req,res) => {    
