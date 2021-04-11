@@ -34,6 +34,13 @@ const inventory = mongoose.model("inventory");
 const categories = mongoose.model("category");
 const orders = mongoose.model("orders");
 
+app.get('/getorder',async(req,res)=>{
+    if ( req.query.username ){
+
+        const data = await orders.findOne({ "username": req.query.username });
+        res.json(data);
+    }
+})
 
 app.post('/signup', async ( req, res ) => {
 
@@ -391,6 +398,15 @@ app.get('/subCategoryItems',async (req,res)=>{
 
 // })
 // prod5.save();
+
+// const data = new orders ({
+//     orderid:1,
+//     username: "user1",
+//     items:{id:[11,2,3],name:['soap', 'shampoo', 'noodles'],quantity:[2,3,4]},
+//     address: "some",
+//     total: 23,  
+// });
+// data.save();
 
 const PORT = process.env.PORT || 3000;
 

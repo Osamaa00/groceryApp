@@ -4,17 +4,17 @@ import { View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Order = () => {
-    useEffect(() => {
-        getOrder();
+    // useEffect(() => {
+    //     getOrder();
 
-    }, [])
-    const getOrder=()=>{
-        const data=await orders.find()
-    }
-    const [order, setorder] = useState(true);
+    // }, [])
+    // const getOrder=()=>{
+    //     const data=await orders.find()
+    // }
+    // const [order, setorder] = useState(true);
     return (
         <View>
-            {order?<Text>Order Confirmed!!</Text>:<Text>Waiting...</Text>}
+            <Text>Order Confirmed!!</Text>
         </View>
     )
 }

@@ -21,7 +21,7 @@ import Order from './components/Order';
 const MainStackNavigator = () => {
 
     // const [data, setdata] = useState([]);
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState({name:false,state:true});
     // const navigation = useNavigation();
     const [refresh, setrefresh] = useState(0);
 
@@ -30,12 +30,17 @@ const MainStackNavigator = () => {
     const Drawer = createDrawerNavigator();
 
     useEffect(() => {
-        Rrefresh();
+        checkLogin()
     }, [refresh])
 
-    const Rrefresh = () => {
-        setLogin(!login);
-        setLogin(!login);
+
+    useEffect(() => {
+        Refresh();
+    }, [refresh])
+
+    const Refresh = () => {
+        setLogin({ ...login, name: !login.name });
+        console.log("I was pressed >>> ", login);
     }
 
     const logout = async () => {
@@ -97,27 +102,25 @@ const MainStackNavigator = () => {
         const temp = [];
         const creds = await _retrieveData('credentials');
         if( creds?.username && creds?.password && creds?.token ){
+            console.log("credentials >>> ", creds.username);
             temp.push("Login");
             temp.push(Login);
             temp.push("Logout");
-            setLogin(true)
-            console.log("state set >> ", login);
+            setLogin({ ...login, state: true })
+            console.log("state set true>> ", login);
             return true;
         } 
         else{
             temp.push("Login");
             temp.push(Login);
             temp.push("Login");
-            setLogin(false);
+            setLogin({ ...login, state: false })
             console.log("state set >> ", login);
             return false;
         }
     }
 
-    useEffect(() => {
-        checkLogin()
-    }, [])
-
+    
     const StackScreen = ({ navigation }) => {
         return (
             <Stack.Navigator>
@@ -147,8 +150,8 @@ const MainStackNavigator = () => {
         <Drawer.Navigator>
             <Drawer.Screen name = "Home" component={ StackScreen } />
             <Drawer.Screen name = "Categories" component={ CategoriesStackScreen } options = {{ title: "Categories" }}/>
-            {login?
-            <Drawer.Screen name = "Login" component={ alternative } options = {{ title: "Logout" }}/>
+            {login.state?
+            <Drawer.Screen name = "Login" component={ Login } options = {{ title: "Logout" }}/>
             :
             <Drawer.Screen name = "Login" component={ Login } options = {{ title: "Login" }}/>}        
         </Drawer.Navigator>  

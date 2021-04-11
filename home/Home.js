@@ -78,6 +78,7 @@ export default function Home({ navigation, refresh,setrefresh }) {
         area: 'IDhar UDhar'
     }))
     // AsyncStorage.removeItem("credentials");
+    // _storeData("cart", { id: 1,  })
     // _storeData("credentials", { username: "admin", password: "admin", token: "abcd" });
     // AsyncStorage.setItem(
     //     "credentials",
@@ -93,7 +94,7 @@ export default function Home({ navigation, refresh,setrefresh }) {
         <View>
             <View style={styles.container}>
                 <TouchableOpacity style={styles.icons}>
-                    <Icon name="bars" size={30} color="#900" onPress={() => {navigation.openDrawer();setrefresh(!refresh);} } />
+                    <Icon name="bars" size={30} color="#900" onPress={() => {navigation.openDrawer(); setrefresh(!refresh);} } />
                 </TouchableOpacity>
                 <TouchableOpacity style = {styles.search} onPress = { () => navigation.navigate('Search Page') }>
                     <Text>

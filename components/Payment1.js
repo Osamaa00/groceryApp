@@ -59,6 +59,7 @@ const Payment1 = () => {
                 console.log("data returned >> ", verify)
                 if(verify?.status == "success"){
                     navigation.navigate("Order");
+                }
                     
             })
             .catch((err)=>console.log(err));
@@ -101,7 +102,7 @@ const Payment1 = () => {
             <View style={ styles.btn }>
                 <Button title='---------------------->>>>' titleStyle={{fontWeight:'bold'}} 
                 color='green' 
-                onPress={ () => await placeOrder() }></Button>
+                onPress={ async () => await placeOrder() }></Button>
             </View>
         </View>
     )
